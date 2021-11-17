@@ -45,24 +45,25 @@ const isStrValid = allPass([
 ]);
 
 const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
-    const tapToLog = tap(writeLog);
+    const tapLog = tap(writeLog);
     pipe(
         cond([
             [isStrValid, 
                 pipe(
+                    tapLog,
                     parseFloat,
                     roundNum,
-                    tapToLog,
+                    tapLog,
                     pipeWith(andThen) ([
                         getApiNumbers,
                         getResult,
-                        tapToLog,
+                        tapLog,
                         length,
-                        tapToLog,
+                        tapLog,
                         squareNum,
-                        tapToLog,
+                        tapLog,
                         getDevisionRemainder,
-                        tapToLog,
+                        tapLog,
                         getApiAnimals,
                         getResult,
                         handleSuccess

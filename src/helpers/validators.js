@@ -1,4 +1,4 @@
-import { all, allPass, anyPass, converge, compose, not, equals, filter, gt, prop, values, curry } from "ramda";  
+import { all, allPass, anyPass, converge, compose, not, equals, filter, gt, prop, values } from "ramda";  
 /**
  * @file Домашка по FP ч. 1
  * 
@@ -39,7 +39,7 @@ const isWhiteStar = compose(isWhite, getStarColor);
 
 
 const moreThan1 = number => gt(number, 1);
-const isCount3= number => equals(number, 3);
+const isCountUp2= number => gt(number, 2);
 const isCount1 = number => equals(number, 1);
 
 
@@ -50,15 +50,15 @@ const getBlueCount = compose(getLength, filter(isBlue), allColors);
 const getOrangeCount = compose(getLength, filter(isOrange), allColors);
 
 
-const isGreenCount3 = compose(isCount3, getGreenCount);
+const isGreenCount3 = compose(isCountUp2, getGreenCount);
 const isGreenCountUp1 = compose(moreThan1, getGreenCount);
 
-const isRedCount3 = compose(isCount3, getRedCount);
+const isRedCount3 = compose(isCountUp2, getRedCount);
 const isRedCount1 = compose(isCount1, getRedCount);
 
 
-const isBlueCount3 = compose(isCount3, getBlueCount);
-const isOrangeCount3 = compose(isCount3, getOrangeCount);
+const isBlueCount3 = compose(isCountUp2, getBlueCount);
+const isOrangeCount3 = compose(isCountUp2, getOrangeCount);
 
 //const curriedCompose = curry(compose);
 //const denialCompose = curriedCompose(not);
