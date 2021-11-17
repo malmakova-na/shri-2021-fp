@@ -41,6 +41,7 @@ const isWhiteStar = compose(isWhite, getStarColor);
 const moreThan1 = number => gt(number, 1);
 const isCountUp2= number => gt(number, 2);
 const isCount1 = number => equals(number, 1);
+const isCount2 = number => equals(number, 2);
 
 
 
@@ -51,7 +52,7 @@ const getOrangeCount = compose(getLength, filter(isOrange), allColors);
 
 
 const isGreenCount3 = compose(isCountUp2, getGreenCount);
-const isGreenCountUp1 = compose(moreThan1, getGreenCount);
+const isGreenCount2 = compose(isCount2, getGreenCount);
 
 const isRedCount3 = compose(isCountUp2, getRedCount);
 const isRedCount1 = compose(isCount1, getRedCount);
@@ -100,7 +101,7 @@ export const validateFieldN5 =  anyPass([
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
 export const validateFieldN6 = allPass([
     isGreenTriangle,
-    isGreenCountUp1,
+    isGreenCount2,
     isRedCount1
 ]);
 
