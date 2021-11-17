@@ -39,7 +39,6 @@ const patialCompose = partialRight(compose, [length]);
 
 const isStrValid = allPass([
     isFloatNum,
-    isPositive,
     patialCompose(isLenghtUp2),
     patialCompose(isLengthLess10),
 ]);
