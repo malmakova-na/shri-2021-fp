@@ -41,16 +41,17 @@ const isStrValid = allPass([
     isFloatNum,
     patialCompose(isLenghtUp2),
     patialCompose(isLengthLess10),
+    isPositive
 ]);
 
 const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
     const tapLog = tap(writeLog);
     pipe(
+        tapLog,
+        parseFloat,
         cond([
             [isStrValid, 
                 pipe(
-                    tapLog,
-                    parseFloat,
                     roundNum,
                     tapLog,
                     pipeWith(andThen) ([
