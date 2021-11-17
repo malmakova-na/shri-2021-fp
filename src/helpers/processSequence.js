@@ -27,7 +27,7 @@ const getApiNumbers = number => api.get('https://api.tech/numbers/base', { from:
 
 const isLengthLess10 = length => lt(length, 10);
 const isLenghtUp2 = length => gt(length, 2);
-const isPositive = number => gt(number, 0);
+const isPositive = number => gt(roundNum( parseFloat(number)), 0);
 
 const isFloatNum = test(/^[0-9]*\.?[0-9]*$/);
 
