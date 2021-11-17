@@ -15,7 +15,7 @@
  * Ответ будет приходить в поле {result}
  */ 
 import Api from '../tools/api';
-import { prop, gt, lt, compose, test, modulo, allPass, partial, partialRight, ifElse, pipeWith, pipe, andThen, tap, length, cond, equals } from 'ramda';
+import { prop, gt, lt, compose, test, allPass, partialRight, pipeWith, pipe, andThen, tap, length, cond } from 'ramda';
 
 const getResult = prop('result');
 
