@@ -15,37 +15,64 @@
  * Ответ будет приходить в поле {result}
  */ 
 import Api from '../tools/api';
+import { prop, gt, lt, compose, test, modulo, allPass, partial, partialRight, ifElse, pipeWith, pipe, andThen, tap, length, cond, equals } from 'ramda';
+
+const getResult = prop('result');
 
 const api = new Api();
 
-/**
- * Я – пример, удали меня
- */
-const wait = time => new Promise(resolve => {
-    setTimeout(resolve, time);
-})
+const getApiAnimals = id => api.get(`https://animals.tech/${id}`, {});
+const getApiNumbers = number => api.get('https://api.tech/numbers/base', { from: 10, to: 2, number: number }); 
 
-const processSequence = ({value, writeLog, handleSuccess, handleError}) => {
-    /**
-     * Я – пример, удали меня
-     */
-    writeLog(value);
 
-    api.get('https://api.tech/numbers/base', {from: 2, to: 10, number: '01011010101'}).then(({result}) => {
-        writeLog(result);
-    });
+const isLengthLess10 = length => lt(length, 10);
+const isLenghtUp2 = length => gt(length, 2);
+const isPositive = number => gt(number, -1);
 
-    wait(2500).then(() => {
-        writeLog('SecondLog')
+const isFloatNum = test(/^[0-9]*\.?[0-9]*$/);
 
-        return wait(1500);
-    }).then(() => {
-        writeLog('ThirdLog');
+const roundNum = number => Math.round(number);
+const squareNum = number => Math.pow(number, 2);
+const getDevisionRemainder = number => number % 3;
 
-        return wait(400);
-    }).then(() => {
-        handleSuccess('Done');
-    });
-}
+const patialCompose = partialRight(compose, [length]);
+
+const isStrValid = allPass([
+    isFloatNum,
+    patialCompose(isPositive),
+    patialCompose(isLenghtUp2),
+    patialCompose(isLengthLess10),
+]);
+
+const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
+    const tapToLog = tap(writeLog);
+    pipe(
+        cond([
+            [isStrValid, 
+                pipe(
+                    parseFloat,
+                    roundNum,
+                    tapToLog,
+                    pipeWith(andThen) ([
+                        getApiNumbers,
+                        getResult,
+                        tapToLog,
+                        length,
+                        tapToLog,
+                        squareNum,
+                        tapToLog,
+                        getDevisionRemainder,
+                        tapToLog,
+                        getApiAnimals,
+                        getResult,
+                        handleSuccess
+                    ])
+            )],
+            [() => handleError('ValidationError')]
+        ])
+        
+    )(value)
+
+};
 
 export default processSequence;

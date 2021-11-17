@@ -62,7 +62,7 @@ const isOrangeCount3 = compose(isCount3, getOrangeCount);
 
 //const curriedCompose = curry(compose);
 //const denialCompose = curriedCompose(not);
-const greenCountMore2 = compose(moreThan1, getGreenCount);
+const greenCountUp1 = compose(moreThan1, getGreenCount);
 const RedCountEqualBlue =  converge(equals, [getRedCount, getBlueCount]);
 const allFiguresOrange = compose(all(isOrange), allColors);
 const allFiguresGreen = compose(all(isGreen), allColors);
@@ -77,7 +77,7 @@ export const validateFieldN1 = allPass([
 ])
 
 // 2. Как минимум две фигуры зеленые. *
-export const validateFieldN2 = greenCountMore2;
+export const validateFieldN2 = greenCountUp1;
 
 // 3. Количество красных фигур равно кол-ву синих.
 export const validateFieldN3 = RedCountEqualBlue;
