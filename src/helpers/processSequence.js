@@ -13,7 +13,7 @@
  * 
  * Иногда промисы от API будут приходить в состояние rejected, (прямо как и API в реальной жизни)
  * Ответ будет приходить в поле {result}
- */
+ */ 
 import Api from '../tools/api';
 
 const api = new Api();

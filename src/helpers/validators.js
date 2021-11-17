@@ -1,4 +1,4 @@
-import { all, allPass, anyPass, converge, compose, not, equals, filter, gt, prop, values } from "ramda";  
+import { all, allPass, anyPass, converge, compose, not, equals, filter, gt, prop, values, curry } from "ramda";  
 /**
  * @file Домашка по FP ч. 1
  * 
@@ -35,11 +35,12 @@ const isBlueCircle = compose(isBlue, getCircleColor);
 const isGreenSquare = compose(isGreen, getSquareColor);
 const isOrangeSquare = compose(isOrange, getSquareColor);
 const isRedStar = compose(isRed, getStarColor);
+const isWhiteStar = compose(isWhite, getStarColor);
 
 
-const moreThanOne = number => gt(number, 1);
-const isCountThree= number => equals(number, 3);
-const isCountOne = number => equals(number, 1);
+const moreThan1 = number => gt(number, 1);
+const isCount3= number => equals(number, 3);
+const isCount1 = number => equals(number, 1);
 
 
 
@@ -49,8 +50,23 @@ const getBlueCount = compose(getLength, filter(isBlue), allColors);
 const getOrangeCount = compose(getLength, filter(isOrange), allColors);
 
 
+const isGreenCount3 = compose(isCount3, getGreenCount);
+const isGreenCountUp1 = compose(moreThan1, getGreenCount);
+
+const isRedCount3 = compose(isCount3, getRedCount);
+const isRedCount1 = compose(isCount1, getRedCount);
 
 
+const isBlueCount3 = compose(isCount3, getBlueCount);
+const isOrangeCount3 = compose(isCount3, getOrangeCount);
+
+//const curriedCompose = curry(compose);
+//const denialCompose = curriedCompose(not);
+const greenCountMore2 = compose(moreThan1, getGreenCount);
+const RedCountEqualBlue =  converge(equals, [getRedCount, getBlueCount]);
+const allFiguresOrange = compose(all(isOrange), allColors);
+const allFiguresGreen = compose(all(isGreen), allColors);
+const TriangleColorEqualSquare = converge(equals, [getTriangleColor, getSquareColor]);
 
 // 1. Красная звезда, зеленый квадрат, все остальные белые.
 export const validateFieldN1 = allPass([
@@ -61,10 +77,10 @@ export const validateFieldN1 = allPass([
 ])
 
 // 2. Как минимум две фигуры зеленые. *
-export const validateFieldN2 = compose(moreThanOne, getGreenCount);
+export const validateFieldN2 = greenCountMore2;
 
 // 3. Количество красных фигур равно кол-ву синих.
-export const validateFieldN3 = converge(equals, [getRedCount, getBlueCount]);
+export const validateFieldN3 = RedCountEqualBlue;
 
 // 4. Синий круг, красная звезда, оранжевый квадрат *
 export const validateFieldN4 = allPass([
@@ -75,35 +91,35 @@ export const validateFieldN4 = allPass([
 
 // 5. Три фигуры одного любого цвета кроме белого (четыре фигуры одного цвета – это тоже true). *
 export const validateFieldN5 =  anyPass([
-    compose(isCountThree, getGreenCount),
-    compose(isCountThree, getRedCount),
-    compose(isCountThree, getBlueCount),
-    compose(isCountThree, getOrangeCount)
+    isGreenCount3,
+    isRedCount3,
+    isBlueCount3,
+    isOrangeCount3
 ]);
 
 // 6. Две зеленые фигуры (одна из них треугольник), еще одна любая красная.
 export const validateFieldN6 = allPass([
     isGreenTriangle,
-    compose(moreThanOne, getGreenCount),
-    compose(isCountOne, getRedCount)
+    isGreenCountUp1,
+    isRedCount1
 ]);
 
 // 7. Все фигуры оранжевые.
-export const validateFieldN7 = compose(all(isOrange), allColors)// compose( getOrangeCount)]);
+export const validateFieldN7 = allFiguresOrange;
 
 // 8. Не красная и не белая звезда. *
 export const validateFieldN8 = allPass([
-    compose(not, isRed, getStarColor),
-    compose(not, isWhite, getStarColor)
+    compose(not, isRedStar),
+    compose(not, isWhiteStar)
 ]);
 
 // 9. Все фигуры зеленые.
-export const validateFieldN9 = compose(all(isGreen), allColors)
+export const validateFieldN9 = allFiguresGreen;
 
 // 10. Треугольник и квадрат одного цвета (не белого)
 export const validateFieldN10 = allPass([
    compose(not, isWhite, getTriangleColor),
    compose(not, isWhite, getSquareColor),
-   converge(equals, [getTriangleColor, getSquareColor])
+   TriangleColorEqualSquare
    
 ]);
